@@ -377,6 +377,122 @@
   .budget-item .bi-hint { margin-top: 8px; font-size: 12px; color: #999; text-align: right; }
   .budget-item .bi-pct { font-size: 13px; font-weight: 700; }
   .annual-chart-wrap { position: relative; height: 340px; }
+
+  /* ===== RESPONSIVE (スマホ 600px以下) ===== */
+  @media (max-width: 600px) {
+
+    /* ヘッダー */
+    header {
+      padding: 12px 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    header h1 { font-size: 17px; }
+    header .subtitle { font-size: 11px; }
+    header > button {
+      font-size: 11px;
+      padding: 5px 10px;
+      margin-left: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* タブバー：横スクロール */
+    .tab-bar {
+      padding: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      white-space: nowrap;
+      display: block; /* flexだと縦並びになるのでblock+inline-blockで横並び */
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      display: inline-block;
+      padding: 12px 16px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    /* タブコンテンツ */
+    .tab-content { padding: 14px 12px; }
+
+    /* カード */
+    .card { padding: 16px 14px; }
+
+    /* サマリー：3列→1列 */
+    .summary-grid { grid-template-columns: 1fr; gap: 10px; }
+    .summary-card { padding: 14px 16px; }
+    .summary-card .value { font-size: 22px; }
+    .summary-card .label { font-size: 12px; }
+
+    /* グラフ：2列→1列 */
+    .charts-row { grid-template-columns: 1fr; }
+    .chart-wrap { height: 240px; }
+
+    /* 固定費テーブル：横スクロール */
+    .card > .fixed-table-wrap,
+    .fixed-table { font-size: 12px; }
+    .fixed-table th, .fixed-table td { padding: 8px 10px; }
+    /* テーブルを横スクロール可能なdivで包む代わりにoverflow設定 */
+    .card:has(.fixed-table) { overflow-x: auto; }
+
+    /* 月ナビ */
+    .month-nav .month-label { font-size: 15px; min-width: 90px; }
+
+    /* 入力フォーム：6列→1列縦積み */
+    .form-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .form-grid .form-group:nth-child(2) { grid-column: 1 / -1; } /* 内容：全幅 */
+    .form-grid .form-group:last-child   { grid-column: 1 / -1; } /* ボタン：全幅 */
+    .form-grid .form-group:last-child .btn { width: 100%; }
+    .form-group input, .form-group select { font-size: 16px; } /* iOSズーム防止 */
+
+    /* 今月サマリーカード：4列→2列 */
+    .totals-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tot-card .tv { font-size: 16px; }
+
+    /* 一括貼り付け */
+    .bulk-toggle { font-size: 13px; gap: 6px; padding: 10px 14px; }
+    .bulk-toggle span:nth-child(3) { display: none; } /* 説明文を非表示 */
+    .bulk-inner { padding: 14px 12px; }
+    .bulk-top-row { grid-template-columns: 1fr; gap: 12px; }
+    .bulk-side { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .bulk-side label { width: 100%; }
+    .bulk-side select { flex: 1; }
+    .btn-parse { flex: 1; }
+
+    /* プレビューテーブル：横スクロール */
+    .preview-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .preview-table { font-size: 12px; min-width: 500px; }
+    .preview-table th, .preview-table td { padding: 7px 8px; }
+    .bulk-register-bar { flex-direction: column; align-items: stretch; gap: 8px; }
+    .bulk-register-bar > div:last-child { display: flex; gap: 8px; }
+    .btn-bulk-ok { flex: 1; padding: 11px; }
+    .preview-header { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+    /* 履歴：横スクロール */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .history-table { min-width: 520px; font-size: 13px; }
+    .history-table th, .history-table td { padding: 8px 10px; }
+    .filter-row { gap: 8px; }
+    .filter-row select { font-size: 13px; width: 100%; }
+
+    /* シミュレーター */
+    .sim-header { grid-template-columns: 1fr; gap: 10px; }
+    .sim-stat .svalue { font-size: 18px; }
+    .slider-section { grid-template-columns: 1fr; gap: 12px; }
+    .sim-chart-row { grid-template-columns: 1fr; }
+    .sim-chart-wrap { height: 220px; }
+
+    /* 年間収支 */
+    .annual-stats { grid-template-columns: 1fr; gap: 10px; }
+    .annual-stat .av { font-size: 20px; }
+    .annual-chart-wrap { height: 260px; }
+    .budget-grid { grid-template-columns: 1fr; gap: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -434,6 +550,7 @@
 
   <div class="card">
     <h2>固定費一覧</h2>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
     <table class="fixed-table">
       <thead><tr><th>カテゴリ</th><th>種別</th><th class="amount">月額</th><th>備考</th></tr></thead>
       <tbody id="fixed-table-body"></tbody>
@@ -445,6 +562,7 @@
         </tr>
       </tfoot>
     </table>
+    </div>
   </div>
 </div>
 
